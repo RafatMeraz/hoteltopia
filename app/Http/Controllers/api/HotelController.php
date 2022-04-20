@@ -29,6 +29,18 @@ class HotelController extends Controller
         ]);
     }
 
+    // get a hotel details
+    public function searchHotel($query)
+    {
+        $hotels = DB::table('hotel')
+            ->where('name', 'LIKE', "%{$query}%")
+            ->get();
+        return response([
+            'status' => 200,
+            'hotels' => $hotels
+        ]);
+    }
+
     // add a new hotel
     public function addNewHotel(Request $request)
     {
@@ -67,25 +79,34 @@ class HotelController extends Controller
             'stars' => 'required',
         ]);
 
-        $result = DB::table('hotel')
-            ->where('id', $request->get('hotel_id'))
-            ->update([
-                'name' => $request->get('name'),
-                'address' => $request->get('name'),
-                'stars' => $request->get('name'),
-                'updated_at' => Carbon::now()
-            ]);
-        if ($result > 0) {
-            return response([
-                'status' => 200,
-                'message' => 'Hotel data updated'
-            ]);
-        } else {
+        try {
+            $result = DB::table('hotel')
+                ->where('id', $request->get('hotel_id'))
+                ->update([
+                    'name' => $request->get('name'),
+                    'address' => $request->get('address'),
+                    'stars' => $request->get('stars'),
+                    'updated_at' => Carbon::now()
+                ]);
+            if ($result > 0) {
+                return response([
+                    'status' => 200,
+                    'message' => 'Hotel data updated'
+                ]);
+            } else {
+                return response([
+                    'status' => 500,
+                    'message' => 'Something went wrong.Try again'
+                ]);
+            }
+        } catch (\Exception $exception) {
             return response([
                 'status' => 500,
-                'message' => 'Something went wrong.Try again'
+                'message' => $exception
             ]);
         }
+
+
     }
 
     public function deleteHotel(Request $request) {
