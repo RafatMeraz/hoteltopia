@@ -59,6 +59,14 @@ class AuthController extends Controller
         }
     }
 
+    public function logOut(Request $request) {
+        $request->user()->currentAccessToken()->delete();
+        return response([
+           'status' => 200,
+           'message' => 'User logged out'
+        ]);
+    }
+
     // create a new token for user
     public function getToken(User $user): string
     {
