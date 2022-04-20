@@ -3,12 +3,32 @@
 namespace App\Http\Controllers\api;
 
 use App\Http\Controllers\Controller;
-use Carbon\Traits\Date;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class HotelController extends Controller
 {
+    // get all hotels
+    public function getAllHotels() {
+        $hotels = DB::table('hotel')->orderBy('id', 'desc')->paginate(20);
+        return response([
+            'status' => 200,
+            'hotels' => $hotels
+        ]);
+    }
+
+    // get a hotel details
+    public function getHotelDetails($hotelId) {
+        $hotelDetails = DB::table('hotel')
+            ->where('id', $hotelId)
+            ->first();
+        return response([
+            'status' => 200,
+            'hotel' => $hotelDetails
+        ]);
+    }
+
     // add a new hotel
     public function addNewHotel(Request $request)
     {
@@ -22,7 +42,7 @@ class HotelController extends Controller
             'name' => $request->get('name'),
             'address' => $request->get('address'),
             'stars' => $request->get('stars'),
-            'created_at' => Date::now()
+            'created_at' => Carbon::now()
         ]);
 
         if ($result) {
@@ -53,7 +73,7 @@ class HotelController extends Controller
                 'name' => $request->get('name'),
                 'address' => $request->get('name'),
                 'stars' => $request->get('name'),
-                'updated_at' => Date::now()
+                'updated_at' => Carbon::now()
             ]);
         if ($result > 0) {
             return response([

@@ -27,6 +27,8 @@ Route::post('register', [AuthController::class, 'createNewUser']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('hotels', [HotelController::class, 'getAllHotels']);
+    Route::get('hotels/{hotelId}', [HotelController::class, 'getHotelDetails']);
     Route::post('add-new-hotel', [HotelController::class, 'addNewHotel']);
     Route::put('update-hotel', [HotelController::class, 'updateHotel']);
     Route::delete('delete-hotel', [HotelController::class, 'deleteHotel']);
