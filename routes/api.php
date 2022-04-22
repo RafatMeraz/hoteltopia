@@ -28,6 +28,7 @@ Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('{hotelId}/hotel-rooms', [HotelRoomController::class, 'getHotelRooms']);
+    Route::get('room/{roomId}', [HotelRoomController::class, 'getHotelRoomDetails']);
     Route::get('hotels', [HotelController::class, 'getAllHotels']);
     Route::get('hotels/{hotelId}', [HotelController::class, 'getHotelDetails']);
     Route::get('hotels/searchByHotel/{query}', [HotelController::class, 'searchHotel']);

@@ -26,4 +26,25 @@ class HotelRoomController extends Controller
             ], 500);
         }
     }
+
+    // get all hotel room details
+    public function getHotelRoomDetails($roomId)
+    {
+        try {
+            $roomDetails = DB::table('hotel_room')
+                ->where('hotel_room.id', '=', $roomId)
+                ->join('hotel_type', 'hotel_room.hotel_type_id', '=', 'hotel_type.id')
+                ->select('hotel_room.*', 'hotel_type.type')
+                ->first();
+            return response([
+                'status' => 200,
+                'room_details' => $roomDetails
+            ]);
+        } catch (\Exception $exception) {
+            return response([
+                'status' => 500,
+                'message' => 'Something went wrong. Try again'
+            ], 500);
+        }
+    }
 }
