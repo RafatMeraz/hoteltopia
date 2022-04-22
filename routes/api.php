@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\HotelController;
-use Illuminate\Http\Request;
+use App\Http\Controllers\api\HotelRoomController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -27,11 +27,13 @@ Route::post('register', [AuthController::class, 'createNewUser']);
 Route::post('login', [AuthController::class, 'login']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
+    Route::get('{hotelId}/hotel-rooms', [HotelRoomController::class, 'getHotelRooms']);
     Route::get('hotels', [HotelController::class, 'getAllHotels']);
     Route::get('hotels/{hotelId}', [HotelController::class, 'getHotelDetails']);
     Route::get('hotels/searchByHotel/{query}', [HotelController::class, 'searchHotel']);
     Route::post('add-new-hotel', [HotelController::class, 'addNewHotel']);
     Route::put('update-hotel', [HotelController::class, 'updateHotel']);
     Route::delete('delete-hotel', [HotelController::class, 'deleteHotel']);
+    Route::delete('logout', [AuthController::class, 'logOut']);
 });
 
