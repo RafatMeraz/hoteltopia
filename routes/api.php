@@ -3,6 +3,7 @@
 use App\Http\Controllers\api\AuthController;
 use App\Http\Controllers\api\HotelController;
 use App\Http\Controllers\api\HotelRoomController;
+use App\Http\Controllers\MigrationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -25,6 +26,8 @@ Route::get('', function () {
 Route::post('register', [AuthController::class, 'createNewUser']);
 
 Route::post('login', [AuthController::class, 'login']);
+
+Route::get('migrate', [MigrationController::class, 'migrateDatabase']);
 
 Route::group(['middleware' => ['auth:sanctum']], function () {
     Route::get('{hotelId}/hotel-rooms', [HotelRoomController::class, 'getHotelRooms']);
